@@ -88,7 +88,7 @@ class CrudControllerCommand extends GeneratorCommand
         $stub = $this->files->get($this->getStub());
 
         $viewPath = $this->option('view-path') ? $this->option('view-path') . '.' : '';
-        $crudName = $this->option('crud-name');
+        $crudName = lcfirst($this->option('crud-name'));
         $crudNameSingular = str_singular($crudName);
         $modelName = $this->option('model-name');
         $modelNamespace = $this->option('model-namespace');

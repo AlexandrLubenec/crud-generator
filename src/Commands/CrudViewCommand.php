@@ -90,6 +90,7 @@ class CrudViewCommand extends Command
         'modelName',
         'modelNameCap',
         'viewName',
+        'routeName',
         'routePrefix',
         'routePrefixCap',
         'routeGroup',
@@ -176,6 +177,11 @@ class CrudViewCommand extends Command
      */
     protected $viewName = '';
 
+    /**
+     * Name of the route
+     * @var string
+     */
+    protected $routeName = '';
     /**
      * Prefix of the route
      *
@@ -269,7 +275,7 @@ class CrudViewCommand extends Command
             : __DIR__ . '/../stubs/views/' . $formHelper . '/';
 
 
-        $this->crudName = strtolower($this->argument('name'));
+        $this->crudName = lcfirst($this->argument('name'));
         $this->varName = lcfirst($this->argument('name'));
         $this->crudNameCap = ucwords($this->crudName);
         $this->crudNameSingular = str_singular($this->crudName);
@@ -282,7 +288,8 @@ class CrudViewCommand extends Command
             : $this->option('route-group');
         $this->routePrefix = ($this->option('route-group')) ? $this->option('route-group') : '';
         $this->routePrefixCap = ucfirst($this->routePrefix);
-        $this->viewName = snake_case($this->argument('name'), '-');
+        $this->viewName = snake_case($this->crudNameSingular, '-');
+        $this->routeName = snake_case($this->crudName, '-');
 
         $viewDirectory = config('view.paths')[0] . '/';
         if ($this->option('view-path')) {
@@ -362,11 +369,11 @@ class CrudViewCommand extends Command
     private function defaultTemplating()
     {
         return [
-            'index' => ['formHeadingHtml', 'formBodyHtml', 'crudName', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'primaryKey'],
+            'index' => ['formHeadingHtml', 'formBodyHtml', 'crudName', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeName', 'primaryKey'],
             'form' => ['formFieldsHtml'],
-            'create' => ['crudName', 'crudNameCap', 'modelName', 'modelNameCap', 'viewName', 'routeGroup', 'viewTemplateDir'],
-            'edit' => ['crudName', 'crudNameSingular', 'crudNameCap', 'modelNameCap', 'modelName', 'viewName', 'routeGroup', 'primaryKey', 'viewTemplateDir'],
-            'show' => ['formHeadingHtml', 'formBodyHtml', 'formBodyHtmlForShowView', 'crudName', 'crudNameSingular', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'primaryKey'],
+            'create' => ['crudName', 'crudNameCap', 'modelName', 'modelNameCap', 'viewName', 'routeGroup', 'routeName', 'viewTemplateDir'],
+            'edit' => ['crudName', 'crudNameSingular', 'crudNameCap', 'modelNameCap', 'modelName', 'viewName', 'routeGroup', 'routeName', 'primaryKey', 'viewTemplateDir'],
+            'show' => ['formHeadingHtml', 'formBodyHtml', 'formBodyHtmlForShowView', 'crudName', 'crudNameSingular', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeName', 'primaryKey'],
         ];
     }
 
